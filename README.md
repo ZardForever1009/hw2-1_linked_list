@@ -1,1 +1,1 @@
-# hw2-1_linked_list
+# HW2_linked_list
