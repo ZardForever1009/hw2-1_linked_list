@@ -27,11 +27,12 @@ int GetNodeCount(Node* head){
 }
 
 // insert node function (need to restore head address after operation)
-void InsertNode(Node*& head, char data, int pos){
-    if(data>126||data<32)cout<<"Insert wrong data\n";        
+void InsertNode(Node*& head, string data_str, int pos){
+    if(data_str.size()>1)cout<<"Insert wrong data\n";   
     else if(head==nullptr&&pos!=0)cout<<"Insert wrong position\n";
     else if(pos<0||pos>GetNodeCount(head))cout<<"Insert wrong position\n"; 
     else{
+        char data=data_str[0];
         // no head
         if(head==nullptr&&pos==0){
             head=new Node();
@@ -106,12 +107,13 @@ void DeleteNode(Node*& head, int pos){
 }
 
 // delete all nodes with same data
-void DeleteData(Node*& head, char data){
-	if(head==nullptr)cout<<"Linked list is empty\n";
-    else if(data>126||data<32)cout<<"Delete wrong data\n";
+void DeleteData(Node*& head, string data_str){
+    if(data_str.size()>1)cout<<"Insert wrong data\n";  
+	else if(head==nullptr)cout<<"Linked list is empty\n";
     else{
         Node* current=head;
         int pos=0;
+        char data=data_str[0];
         while(current!=nullptr){
             if(current->data==data){
                 DeleteNode(head, pos);
@@ -140,10 +142,10 @@ void PrintList(Node* head){
 }
 
 // find node counts with specified data with return count result
-int NumOfOccur(Node* head, char data){
+int NumOfOccur(Node* head, string data_str){
     // prevent invalid condition
-    if(data>126||data<32){
-        cout<<"Search wrong data\n";
+    if(data_str.size()>1){
+        cout<<"Insert wrong data\n";  
         return -1;
     }
     else if(head==nullptr){
@@ -152,6 +154,7 @@ int NumOfOccur(Node* head, char data){
     }
     int count=0;
     Node* current=head;
+    char data=data_str[0];
     while(current!=nullptr){
         if(current->data==data)count++;
         current=current->next;
@@ -170,7 +173,9 @@ void MaxNumOfOccur(Node* head){
     char* arr=new char[node_count]{0}; // initialize an array(prevent all elements're max occur)
     Node* current=head;
     while(current!=nullptr){
-        int current_node_occur=NumOfOccur(current, current->data);
+        string current_data;
+        current_data.push_back(current->data);
+        int current_node_occur=NumOfOccur(current, current_data);
         if(current_node_occur>max_occur){  // refresh arr since max occur appear
             max_occur=current_node_occur;  // update max count
             for(int i=0;i<node_count;i++){
@@ -231,9 +236,8 @@ void execute(){
         // start doing things based on its action
         if(action=="InsertNode"){
             cin>>data;
-            char c=data[0];
             cin>>pos;
-            InsertNode(head, c, stoi(pos));
+            InsertNode(head, data, stoi(pos));
         }
         else if(action=="DeleteNode"){
             cin>>pos;
@@ -241,16 +245,14 @@ void execute(){
         }
         else if(action=="DeleteData"){
             cin>>data;
-            char c=data[0];
-            DeleteData(head, c);
+            DeleteData(head, data);
         }
         else if(action=="PrintList"){
             PrintList(head);
         }
         else if(action=="NumOfOccur"){
             cin>>data;
-            char c=data[0];
-            int count=NumOfOccur(head, c);
+            int count=NumOfOccur(head, data);
             if(count!=-1)cout<<count<<endl; // no error then output return value
         }
         else if(action=="MaxNumOfOccur"){
