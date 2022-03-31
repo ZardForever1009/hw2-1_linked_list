@@ -85,13 +85,13 @@ void DeleteNode(Node*& head, int pos){
         Node* restore_head=head;
         // front
         if(pos==0){
-            (head->next)->prev=nullptr;                        
+            (head->next)->prev=nullptr;          
             head=head->next;
         }
         // end
         else if(pos==GetNodeCount(head)-1){
             while(head->next!=nullptr)head=head->next;                
-            (head->prev)->next=nullptr;            
+            (head->prev)->next=nullptr;               
             head=restore_head;
         }
         // middle
