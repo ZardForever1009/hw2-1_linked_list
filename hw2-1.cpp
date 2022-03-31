@@ -111,8 +111,13 @@ void DeleteData(Node*& head, char data){
     else if(data>126||data<32)cout<<"Delete wrong data\n";
     else{
         Node* current=head;
+        int pos=0;
         while(current!=nullptr){
-            if(current->data==data)DeleteGivenNode(head, current);
+            if(current->data==data){
+                DeleteNode(head, pos);
+                pos--;
+            }
+            pos++;
             current=current->next;
         }
     }
