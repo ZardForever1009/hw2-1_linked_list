@@ -28,8 +28,13 @@ int GetNodeCount(Node* head){
 
 // insert node function (need to restore head address after operation)
 void InsertNode(Node*& head, string data_str, int pos){
-    if(data_str.size()>1)cout<<"Insert wrong data\n";   
-    else if(head==nullptr&&pos!=0)cout<<"Insert wrong position\n";
+    for(int i=0;i<data_str.size();i++){
+        if(data_str[i]<32||data_str[i]>126||data_str.size()>1){
+            cout<<"Insert wrong data\n";  
+            return;
+        }
+    }
+    if(head==nullptr&&pos!=0)cout<<"Insert wrong position\n";
     else if(pos<0||pos>GetNodeCount(head))cout<<"Insert wrong position\n"; 
     else{
         char data=data_str[0];
@@ -86,6 +91,10 @@ void DeleteNode(Node*& head, int pos){
         Node* restore_head=head;
         // front
         if(pos==0){
+            if(head->next==nullptr&&head->prev==nullptr){ // prevent the node is the last one node
+                head=nullptr;
+                return;
+            }
             (head->next)->prev=nullptr;          
             head=head->next;
         }
@@ -108,8 +117,13 @@ void DeleteNode(Node*& head, int pos){
 
 // delete all nodes with same data
 void DeleteData(Node*& head, string data_str){
-    if(data_str.size()>1)cout<<"Insert wrong data\n";  
-	else if(head==nullptr)cout<<"Linked list is empty\n";
+    for(int i=0;i<data_str.size();i++){
+        if(data_str[i]<32||data_str[i]>126||data_str.size()>1){
+            cout<<"Delete wrong data\n";  
+            return;
+        }
+    }
+	if(head==nullptr)cout<<"Linked list is empty\n";
     else{
         Node* current=head;
         int pos=0;
@@ -144,11 +158,13 @@ void PrintList(Node* head){
 // find node counts with specified data with return count result
 int NumOfOccur(Node* head, string data_str){
     // prevent invalid condition
-    if(data_str.size()>1){
-        cout<<"Insert wrong data\n";  
-        return -1;
+    for(int i=0;i<data_str.size();i++){
+        if(data_str[i]<32||data_str[i]>126||data_str.size()>1){
+            cout<<"Search wrong data\n";  
+            return -1;
+        }
     }
-    else if(head==nullptr){
+    if(head==nullptr){
         cout<<"Linked list is empty\n";
         return -1;
     }
@@ -174,7 +190,7 @@ void MaxNumOfOccur(Node* head){
     Node* current=head;
     while(current!=nullptr){
         string current_data;
-        current_data.push_back(current->data);
+        current_data=current->data;
         int current_node_occur=NumOfOccur(current, current_data);
         if(current_node_occur>max_occur){  // refresh arr since max occur appear
             max_occur=current_node_occur;  // update max count
@@ -216,6 +232,10 @@ void SearchWord(Node* head, char* word){
     }
     Node* current=head;
     while(current!=nullptr){
+        if(*word>126||*word<32){
+            cout<<"Search wrong word\n";
+            return;
+        }
         if(!(*word)){
             cout<<"found\n";
             return;
