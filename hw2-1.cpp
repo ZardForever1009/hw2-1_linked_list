@@ -94,18 +94,17 @@ void DeleteNode(Node*& head, int pos){
             if(head->next==nullptr&&head->prev==nullptr){ // prevent the node is the last one node
                 head=nullptr;
                 return;
-            }
-            (head->next)->prev=nullptr;          
+            }                 
             head=head->next;
+            head->prev=nullptr; 
+            delete head->prev;
         }
-        // end
+        // tail
         else if(pos==GetNodeCount(head)-1){
-            while(head->next!=nullptr)head=head->next;                
-            (head->prev)->next=nullptr;
-            head->prev=nullptr;
+            while(head->next!=nullptr)head=head->next;
+            head=head->prev;
             head->next=nullptr;
-            head=nullptr;
-            delete head;
+            delete head->next;
             head=restore_head;
         }
         // middle
