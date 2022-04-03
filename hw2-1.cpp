@@ -101,14 +101,20 @@ void DeleteNode(Node*& head, int pos){
         // end
         else if(pos==GetNodeCount(head)-1){
             while(head->next!=nullptr)head=head->next;                
-            (head->prev)->next=nullptr;               
+            (head->prev)->next=nullptr;
+            head->prev=nullptr;
+            head->next=nullptr;
+            head=nullptr;
+            delete head;
             head=restore_head;
         }
         // middle
         else{
             for(int i=0;i<pos;i++)head=head->next;
             (head->prev)->next=head->next;
-            (head->next)->prev=head->prev;            
+            (head->next)->prev=head->prev;
+            head=nullptr;
+            delete head;
             head=restore_head;
         }
     }
@@ -232,14 +238,14 @@ void SearchWord(Node* head, char* word){
     }
     Node* current=head;
     while(current!=nullptr){
-        if(*word>126||*word<32){
-            cout<<"Search wrong word\n";
-            return;
-        }
-        if(!(*word)){
+        if(*word==0||!(*word)){
             cout<<"found\n";
             return;
         }
+        if(*word>126||*word<32){
+            cout<<"Search wrong word\n";
+            return;
+        }        
         if(current->data==(*word))word++;
         current=current->next;
     }
